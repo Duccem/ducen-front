@@ -1,12 +1,27 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/user/">About</router-link>
-    </div>
-    <router-view />
+    <ServiceProvider>
+      <div id="nav">
+        <router-link to="/">Home</router-link> |
+        <router-link to="/user/">About</router-link>
+      </div>
+      <router-view />
+    </ServiceProvider>
   </div>
 </template>
+
+<script lang="ts">
+import { Component, Vue } from "vue-property-decorator";
+import ServiceProvider from '@/services/ServiceProvider.vue';
+
+@Component({
+  name:'App',
+  components:{
+    ServiceProvider
+  }
+})
+export default class App extends Vue{}
+</script>
 
 <style>
 #app {
