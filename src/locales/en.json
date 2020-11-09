@@ -1,7 +1,12 @@
 {
+    "login":{
+        "title":{
+            "label":"LogIn"
+        }
+    },
     "common":{
-        "greeting": { 
-            "label":"Hello"
+        "lenguage":{
+            "label":"English"
         }
     }
 }

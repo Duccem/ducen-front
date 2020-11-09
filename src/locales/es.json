@@ -1,7 +1,12 @@
 {
+    "login":{
+        "title":{
+            "label":"Iniciar Sesion"
+        }
+    },
     "common":{
-        "greeting": { 
-            "label":"Hola"
+        "lenguage":{
+            "label":"Español"
         }
     }
 }

@@ -1,7 +1,12 @@
 {
+    "login":{
+        "title":{
+            "label":"Commencer la session"
+        }
+    },
     "common":{
-        "greeting": { 
-            "label":"Salut"
+        "lenguage":{
+            "label":"Français"
         }
     }
 }

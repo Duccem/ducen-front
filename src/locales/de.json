@@ -1,7 +1,12 @@
 {
+    "login":{
+        "title":{
+            "label":"Einloggen"
+        }
+    },
     "common":{
-        "greeting": { 
-            "label":"Hallo"
+        "lenguage":{
+            "label":"Deutsche"
         }
     }
 }

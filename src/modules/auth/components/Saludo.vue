@@ -1,7 +1,5 @@
 <template>
-    <router-link to="/sign-up">
-        <h1>{{ msg }}</h1>
-    </router-link> 
+    <h1>{{ msg }}</h1>
 </template>
 
 <script lang="ts">
