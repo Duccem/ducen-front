@@ -11,7 +11,7 @@
           <b-form-group id="login-group-2" :label="$t('login.password.label')" label-for="password">
             <b-form-input id="password" v-model="password" :placeholder="$t('login.password.placeholder')" required></b-form-input>
           </b-form-group>
-          <b-button type="submit" variant="primary">{{ $t('login.title.label') }}</b-button>
+          <b-button to="/home" type="submit" variant="primary">{{ $t('login.title.label') }}</b-button>
           <b-button style="margin-left:10px;" variant="success">{{ $t('signup.title.label') }}</b-button>
         </b-form>
       </b-card>
@@ -20,9 +20,18 @@
 </template>
 
 <script lang="ts">
+// Vue
 import { Component, Inject, Vue } from "vue-property-decorator";
-import Saludo from "@/modules/auth/components/Saludo.vue";
-import { AuthService } from "@/services/rest/auth";
+
+// Components
+import Saludo from "@/modules/shared/Components/Saludo.vue";
+
+// Services
+import { AuthService } from "@/modules/Auth/Services/auth";
+
+// Domain
+import { User, UserJson } from "@/modules/Auth/Models/User";
+
 
 @Component({
   components: {
@@ -38,13 +47,19 @@ export default class Login extends Vue {
   public password = "";
 
   public async login(){
-    const { message } = await this.authService.login(this.user, this.password);
+    const { message, data } = await this.authService.login(this.user, this.password);
+
     if(message === "Ok"){
+      const user = new User(data as UserJson);
+      localStorage.setItem('user', JSON.stringify(user.toPrimitives()))
+      localStorage.setItem('token', user.toPrimitives().access_token)
       this.$router.push('/user');
     }
   }
 }
 </script>
+
+
 
 <style lang="css">
   #login{

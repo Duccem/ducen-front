@@ -1,33 +1,19 @@
 <template>
   <div id="app">
-    <ServiceProvider>
-      <b-dropdown variant="primary" :text="$t('common.lenguage.label')" id="lang">
-        <b-dropdown-item v-for="(lang, i) in langs" :key="`Lang${i}`" @click="changeLocale(lang)">
-          {{ lang }}
-        </b-dropdown-item>
-      </b-dropdown>
-      <router-view />
-    </ServiceProvider>
+    <router-view />
   </div>
 </template>
 
 <script lang="ts">
+
 import { Component, Vue } from "vue-property-decorator";
-import ServiceProvider from '@/services/ServiceProvider.vue';
-
-@Component({
-  name:'App',
-  components:{
-    ServiceProvider
-  }
-})
-export default class App extends Vue{
-  langs = ["en", "es", "fr", "pt", "de"];
-
-  public changeLocale(lang: string){
-    this.$root.$i18n.locale = lang;
-  }
+import { AuthService } from "./modules/Auth/Services/auth";
+import axios from "axios";
+@Component({ name: "App" })
+export default class App extends Vue {
+  authService: AuthService = new AuthService(axios);
 }
+
 </script>
 
 <style>

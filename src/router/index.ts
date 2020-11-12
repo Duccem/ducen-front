@@ -1,8 +1,8 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
-import authRouter from "@/modules/auth/router";
-import index from "@/modules/auth/views/index.vue";
-import index2 from "@/modules/users/views/index.vue";
+import index from "@/modules/Auth/Views/index.vue";
+import authRouter from "@/modules/Auth/router";
+import Layout from "@/modules/shared/Components/Layout.vue";
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
@@ -13,9 +13,9 @@ const routes: Array<RouteConfig> = [
     component: index
   },
   {
-    path:"/user",
+    path:"/home",
     name:'user',
-    component: index2
+    component: Layout
   }
 ];
 

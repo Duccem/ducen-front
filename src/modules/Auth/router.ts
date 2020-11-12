@@ -1,6 +1,6 @@
 
 import HomeUser from "@/modules/users/views/HomeUser.vue";
-import Login from "@/modules/auth/views/Login.vue";
+import Login from "@/modules/Auth/Views/Login.vue";
 import { RouteConfig } from 'vue-router';
 const routes: Array<RouteConfig> = [
     {
