@@ -12,6 +12,9 @@ import axios from "axios";
 @Component({ name: "App" })
 export default class App extends Vue {
   authService: AuthService = new AuthService(axios);
+  mounted(){
+    this.$store.dispatch('auth/SET_TOKEN', 'hdffg');
+  }
 }
 
 </script>
