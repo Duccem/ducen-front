@@ -1,80 +1,58 @@
+import { Actions, Mutations, Getters, State, CustomActionContext } from "@/plugins/store";
+import { MutationTree, ActionTree, GetterTree, ActionContext } from "vuex";
 import { UserJson } from '../Models/User';
-import { ActionContext, MutationTree, ActionTree } from "vuex";
 
-/* Types of auth store */
-
-//** AUTH STATE CONFIG */
-
-/** Auth type of data that the store handler */
 export type AuthState = {
     user: UserJson | null;
     token: string;
 }
 
-const state: AuthState = {
-    user: null,
-    token: ''
-}
-
-//** Mutations definition of auth module */
-
-/** Types of mutations permited */
-export enum AuhtMutationsType {
+export enum AuthMutationsType  {
     SET_USER = "SET_USER",
     SET_TOKEN = "SET_TOKEN"
 }
 
-/** Contract to use the Mutations of Auth module 
- * @function SET_USER modify, update or set the current user
- * @function SET_TOKEN set the access_token, to hold the session and can make request to the API
-*/
-export interface AuthMutations<S = AuthState>  {
-    [AuhtMutationsType.SET_USER](state: S, payload: UserJson): void;
-    [AuhtMutationsType.SET_TOKEN](state: S, payload: string): void;
+export interface AuthMutations extends Mutations {
+    [AuthMutationsType.SET_USER](state: AuthState, payload: UserJson): void;
+    [AuthMutationsType.SET_TOKEN](state: AuthState, payload: string): void;
 }
 
-const mutations: MutationTree<AuthState> & AuthMutations = {
-    [AuhtMutationsType.SET_USER](state, payload: UserJson){
+const mutations: AuthMutations = {
+    [AuthMutationsType.SET_USER](state, payload: UserJson){
         state.user = payload;
     },
-    [AuhtMutationsType.SET_TOKEN](state, payload: string){
+    [AuthMutationsType.SET_TOKEN](state, payload: string){
         state.token = payload;
     }
 }
 
-//** Actions of the Auth module store */
-
-/** Types of actions permited */
 export enum AuthActionsType {
     SET_USER = "SET_USER",
     SET_TOKEN = "SET_TOKEN"
 }
 
-/** Extend of the action context object */
-export type AuthActionContext = {
-    commit<K extends keyof AuthMutations>(key: K, payload: Parameters<AuthMutations[K]>[1]): ReturnType<AuthMutations[K]>
-} & Omit<ActionContext<AuthState, AuthState>, 'commit'>
+export type AuthCustomActionContext = CustomActionContext<AuthState>
 
-/** Contract to use the Actions of Auth module store from the components and others */
-export interface AuthActions {
-    [AuthActionsType.SET_USER]({ commit }: AuthActionContext, payload: UserJson): void
-    [AuthActionsType.SET_TOKEN]({ commit }: AuthActionContext, payload: string): void
+export interface AuthActions extends Actions {
+    [AuthActionsType.SET_USER]({ commit }: AuthCustomActionContext, payload: UserJson): void
+    [AuthActionsType.SET_TOKEN]({ commit }: AuthCustomActionContext, payload: string): void
 }
 
-const actions: ActionTree<AuthState, AuthState> & AuthActions = {
+const actions: AuthActions = {
     [AuthActionsType.SET_USER]({ commit }, payload) {
-        commit(AuhtMutationsType.SET_USER, payload)
+        commit(AuthMutationsType.SET_USER, payload)
     },
 
     [AuthActionsType.SET_TOKEN]({commit}, payload){
-        commit(AuhtMutationsType.SET_TOKEN, payload)
+        commit(AuthMutationsType.SET_TOKEN, payload)
     }
 }
 
-export const auth = {
-    namespeced: true,
-    state,
-    mutations,
-    actions
-}
+const getters: GetterTree<State,State> = {}
 
+const state: any {
+
+}
+export default {
+    mutations, actions, getters, state
+}
