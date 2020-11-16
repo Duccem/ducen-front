@@ -3,10 +3,12 @@ import { Entity, EntityJson } from '@/modules/shared/Models/Entity';
 export class User extends Entity {
     public _id: string;
     public name: string;
+    public access_token: string;
     constructor(data: UserJson){
         super();
         this._id = data._id;
         this.name = data.firstname + ' ' + data.lastname;
+        this.access_token = data.access_token
     }
     public fromPrimitives(data: any): User {
         return new User(data as UserJson);

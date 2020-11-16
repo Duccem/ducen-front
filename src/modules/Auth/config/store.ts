@@ -1,58 +1,54 @@
-import { Actions, Mutations, Getters, State, CustomActionContext } from "@/plugins/store";
-import { MutationTree, ActionTree, GetterTree, ActionContext } from "vuex";
-import { UserJson } from '../Models/User';
+import { Module, Mutation, Action, VuexModule } from "vuex-module-decorators";
+import { UserJson, User } from '../Models/User';
+import { AuthService } from "@/modules/Auth/Services/auth";
+import axios from "axios";
 
-export type AuthState = {
-    user: UserJson | null;
-    token: string;
+@Module({namespaced: true})
+export default class AuthStore extends VuexModule {
+    user: UserJson | null = null;
+    token: string = "";
+    authService = new AuthService(axios)
+    @Mutation
+    [AuthMutations.SET_USER](payload: UserJson): void{
+        this.user = payload;
+    }
+
+    @Mutation
+    [AuthMutations.SET_TOKEN](payload: string): void{
+        this.token = payload
+    }
+
+    @Action
+    async [AuthActions.LOGIN]({ user, password }: any): Promise<void>{
+        try {
+            const { data } = await this.authService.login(user, password);
+            const newUser = new User(data as UserJson)
+            this.context.commit(AuthMutations.SET_USER, newUser.toPrimitives())
+            this.context.commit(AuthMutations.SET_TOKEN, newUser.access_token);
+            localStorage.setItem('user', JSON.stringify(user.toPrimitives()))
+            localStorage.setItem('token', newUser.toPrimitives().access_token)
+        } catch (error) {
+            console.log(error)
+            throw new Error("Loggin Error")
+        }
+    }
+
+    get accessToken(): string {
+        return "Barear " + this.token;
+    }
+
+    get authenticationService(): AuthService {
+        return this.authService;
+    }
 }
 
-export enum AuthMutationsType  {
+export enum AuthMutations {
     SET_USER = "SET_USER",
     SET_TOKEN = "SET_TOKEN"
 }
 
-export interface AuthMutations extends Mutations {
-    [AuthMutationsType.SET_USER](state: AuthState, payload: UserJson): void;
-    [AuthMutationsType.SET_TOKEN](state: AuthState, payload: string): void;
-}
-
-const mutations: AuthMutations = {
-    [AuthMutationsType.SET_USER](state, payload: UserJson){
-        state.user = payload;
-    },
-    [AuthMutationsType.SET_TOKEN](state, payload: string){
-        state.token = payload;
-    }
-}
-
-export enum AuthActionsType {
-    SET_USER = "SET_USER",
-    SET_TOKEN = "SET_TOKEN"
-}
-
-export type AuthCustomActionContext = CustomActionContext<AuthState>
-
-export interface AuthActions extends Actions {
-    [AuthActionsType.SET_USER]({ commit }: AuthCustomActionContext, payload: UserJson): void
-    [AuthActionsType.SET_TOKEN]({ commit }: AuthCustomActionContext, payload: string): void
-}
-
-const actions: AuthActions = {
-    [AuthActionsType.SET_USER]({ commit }, payload) {
-        commit(AuthMutationsType.SET_USER, payload)
-    },
-
-    [AuthActionsType.SET_TOKEN]({commit}, payload){
-        commit(AuthMutationsType.SET_TOKEN, payload)
-    }
-}
-
-const getters: GetterTree<State,State> = {}
-
-const state: any {
-
-}
-export default {
-    mutations, actions, getters, state
+export enum AuthActions {
+    LOGIN = "LOGIN",
+    SIGN_UP = "SIGN_UP",
+    LOG_OUT = "LOG_OUT"
 }
