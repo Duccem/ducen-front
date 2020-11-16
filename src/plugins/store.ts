@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 // Modules of the store
-import Auth from "@/modules/Auth/config/store";
+import Auth from "@/modules/Auth/Store/store";
 
 Vue.use(Vuex);
 
